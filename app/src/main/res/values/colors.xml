@@ -12,4 +12,7 @@
     <color name="traffic_red">#B81D13</color>
     <color name="traffic_yellow">#EFB700</color>
     <color name="traffic_green">#008450</color>
+    <color name="gray2">#D3D3D3</color>
+    <color name="lightergray">#F6F6F6</color>
+    <color name="darkgray">#656565</color>
 </resources>

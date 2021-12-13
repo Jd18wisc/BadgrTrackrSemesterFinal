@@ -7,9 +7,11 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNav; // create bottom nav
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNav); // set bottom nav object to the bottom nav xml object
         bottomNav.setSelectedItemId(R.id.home_option); // set the selected item to the home page
+        bottomNav.setOnItemSelectedListener(this::handleSelectNavigation);
+        getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, home).commit();
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM); // sets the header to custom instead of default
         getSupportActionBar().setCustomView(R.layout.action_bar); // pass in the custom app header
@@ -32,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // handles the nav page change selection
-    // * this is where we need to reset the selected item, having trouble getting it working
     public boolean handleSelectNavigation(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
         switch(item.getItemId()) {

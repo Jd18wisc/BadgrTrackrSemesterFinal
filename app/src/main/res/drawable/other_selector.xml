@@ -6,5 +6,5 @@
         android:drawable="@drawable/new_selected" />
 
     <item
-        android:drawable="@drawable/cus_exp_item" />
+        android:drawable="@drawable/cus_exp_item_other" />
 </selector>

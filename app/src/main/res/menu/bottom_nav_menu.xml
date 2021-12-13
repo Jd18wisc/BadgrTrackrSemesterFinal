@@ -3,16 +3,13 @@
     <item
         android:id="@+id/map_option"
         android:title="Map"
-        android:icon="@drawable/nav_map_foreground"
-        android:onClick="handleSelectNavigation"/>
+        android:icon="@drawable/nav_map_foreground" />
     <item
         android:id="@+id/home_option"
         android:title="Home"
-        android:icon="@drawable/nav_home_foreground"
-        android:onClick="handleSelectNavigation"/>
+        android:icon="@drawable/nav_home_foreground" />
     <item
         android:id="@+id/account_option"
         android:title="Account"
-        android:icon="@drawable/nav_account_foreground"
-        android:onClick="handleSelectNavigation"/>
+        android:icon="@drawable/nav_account_foreground" />
 </menu>

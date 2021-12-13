@@ -1,10 +1,20 @@
 package com.example.badgrtrackr_final.data_types;
 
+import android.os.Build;
+import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class User {
     private String first; // first name
@@ -21,6 +31,10 @@ public class User {
         this.email = csvRow[2];
         this.locationHistory = formatLocationHistory(csvRow[3]);
         this.favoriteLocationId = getFavoriteLocation();
+    }
+
+    public Integer getLocation(String locationName) {
+        return locationHistory.get(locationName);
     }
 
     // converts the location history string into a map
@@ -51,6 +65,24 @@ public class User {
             }
         }
         return key;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<String[]> getCommonLocations() {
+        List<String[]> commonLocations = new ArrayList<>();
+        String[] tempArr1 = {"favorite", getFavoriteLocation(), locationHistory.get(getFavoriteLocation()).toString()};
+        commonLocations.add(tempArr1);
+        Log.d("uuud", commonLocations.get(0)[1]);
+
+        List<String> keys = locationHistory.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
+        Integer value = locationHistory.get(keys.get(1));
+        String[] tempArr2 = {"common1", keys.get(1), value.toString() };
+        commonLocations.add(tempArr2);
+
+        value = locationHistory.get(keys.get(2));
+        String[] tempArr3 = {"common2", keys.get(2), value.toString()};
+        commonLocations.add(tempArr3);
+        return commonLocations;
     }
 
     // returns the number of visits for a specified location

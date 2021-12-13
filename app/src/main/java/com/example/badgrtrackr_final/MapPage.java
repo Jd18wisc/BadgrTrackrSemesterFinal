@@ -3,11 +3,13 @@ package com.example.badgrtrackr_final;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -38,6 +40,7 @@ public class MapPage extends Fragment implements OnMapReadyCallback {
     LocationListAPI locAPI; // location list API to access location data
     List<LocationData> locList;
     FusedLocationProviderClient client;
+    Location currLoc;
 
     public MapPage() {
 
@@ -80,10 +83,10 @@ public class MapPage extends Fragment implements OnMapReadyCallback {
             googleMap.setMyLocationEnabled(true);
             client.getLastLocation()
                     .addOnCompleteListener(task -> {
-                        android.location.Location mLastKnown = task.getResult();
-                        if (task.isSuccessful() && mLastKnown != null){
+                        currLoc = task.getResult();
+                        if (task.isSuccessful() && currLoc != null){
                             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnown.getLatitude(), mLastKnown.getLongitude()),
+                                    new LatLng(currLoc.getLatitude(), currLoc.getLongitude()),
                                     14
                             ));
                         }
@@ -108,7 +111,18 @@ public class MapPage extends Fragment implements OnMapReadyCallback {
                     des = BitmapDescriptorFactory.defaultMarker(180);
                     break;
             }
-            MarkerOptions marker = new MarkerOptions().position(latlng).icon(des).title(location.getName());
+
+            //Calculating and adding the distance data
+            double distance;
+            float[] res = new float[10];
+            if (currLoc != null){
+                Location.distanceBetween(currLoc.getLatitude(), currLoc.getLongitude(), location.getCoordinates().get("longitude"), location.getCoordinates().get("latitude"), res);
+                distance = res[0] * 0.000621371;
+            } else {
+                distance = -1;
+            }
+            String dist = String.valueOf(Math.round(100*distance)/100.0);
+            MarkerOptions marker = new MarkerOptions().position(latlng).icon(des).title(location.getName()).snippet(dist + " mi.");
             locations.add(marker);
         }
         for (int i=0;i<locations.size();i++){
